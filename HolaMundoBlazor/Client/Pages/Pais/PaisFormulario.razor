@@ -1,0 +1,31 @@
+﻿<EditForm Model="Pais" OnValidSubmit="onValitSubmit">
+    <DataAnnotationsValidator/>
+    <div class="form-group">
+        <label>Codigo</label>
+        <div>
+            <InputText class="form-control" @bind-Value="Pais.CodPais" />
+            <ValidationMessage For="@(()=>Pais.CodPais)"/>
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Nombre del pais</label>
+        <div>
+            <InputText class="form-control" @bind-Value="Pais.NombrePais" />
+            <ValidationMessage For="@(()=>Pais.NombrePais)" />
+        </div>
+    </div>
+    <button class="btn btn-danger" type="submit">Agregar</button>
+    <button class="btn btn-dark" @onclick="onCancel" type="button">Cancelar</button>
+
+
+
+</EditForm>
+
+@code {
+    [Parameter] public HolaMundoBlazor.BD.Entidades.Pais Pais { get; set; }
+    [Parameter] public EventCallback onValitSubmit { get; set; }
+    [Parameter] public EventCallback onCancel { get; set; }
+
+
+
+}

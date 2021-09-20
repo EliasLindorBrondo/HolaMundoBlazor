@@ -1,0 +1,26 @@
+﻿@page "/pais/crear" 
+@inject NavigationManager navigationmanager
+
+<h3>Agregar Nuevo Pais</h3>
+<PaisFormulario onValitSubmit="AddPais"  Pais="pais" onCancel="Cancelar" />
+
+
+
+@code {
+
+    private HolaMundoBlazor.BD.Entidades.Pais pais = new();
+
+    private async Task AddPais()
+    {
+        Console.WriteLine($"Graba{pais.NombrePais}");
+        navigationmanager.NavigateTo("/paises");
+
+    }
+
+    private async Task Cancelar()
+    {
+        navigationmanager.NavigateTo("/paises");
+
+    }
+
+}

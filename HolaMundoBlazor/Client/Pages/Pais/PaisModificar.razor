@@ -1,0 +1,40 @@
+﻿@page "/pais/modificar/{PaisId:int}/{codPais}/{nomPais}"
+@inject NavigationManager navigationmanager
+
+<h3>Modificar Pais</h3>
+
+<PaisFormulario onValitSubmit="AddPais" Pais="pais" onCancel="Cancelar" />
+
+@code {
+
+    private HolaMundoBlazor.BD.Entidades.Pais pais;
+    [Parameter] public int PaisId { get; set; }
+    [Parameter] public string codPais { get; set; }
+    [Parameter] public string nomPais { get; set; }
+
+    protected async override Task OnInitializedAsync()
+    {
+       
+        pais = new ()
+        {
+            Id = PaisId,
+            CodPais = codPais,
+            NombrePais = nomPais
+        };
+    }
+
+    private async Task AddPais()
+    {
+        Console.WriteLine($"Graba modificacion{pais.NombrePais}");
+        navigationmanager.NavigateTo("/paises");
+
+    }
+
+    private async Task Cancelar()
+    {
+        navigationmanager.NavigateTo("/paises");
+
+    }
+
+
+}

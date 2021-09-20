@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31402.337
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolaMundoBlazor.Server", "HolaMundoBlazor\Server\HolaMundoBlazor.Server.csproj", "{B71F6876-7B5F-46D3-AD80-B8F513BBCD2F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HolaMundoBlazor.Server", "HolaMundoBlazor\Server\HolaMundoBlazor.Server.csproj", "{B71F6876-7B5F-46D3-AD80-B8F513BBCD2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolaMundoBlazor.Client", "HolaMundoBlazor\Client\HolaMundoBlazor.Client.csproj", "{95A4A79D-DE45-4EF0-9FBF-A348E5DA4CD0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HolaMundoBlazor.Client", "HolaMundoBlazor\Client\HolaMundoBlazor.Client.csproj", "{95A4A79D-DE45-4EF0-9FBF-A348E5DA4CD0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HolaMundoBlazor.BD", "HolaMundoBlazor\Shared\HolaMundoBlazor.BD.csproj", "{0CC1A9A3-973A-4E83-9F39-4BEBD1661D4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HolaMundoBlazor.BD", "HolaMundoBlazor\Shared\HolaMundoBlazor.BD.csproj", "{0CC1A9A3-973A-4E83-9F39-4BEBD1661D4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
