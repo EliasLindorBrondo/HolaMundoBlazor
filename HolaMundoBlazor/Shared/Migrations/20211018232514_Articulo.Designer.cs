@@ -3,14 +3,16 @@ using HolaMundoBlazor.BD.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HolaMundoBlazor.BD.Migrations
 {
     [DbContext(typeof(Jscontext))]
-    partial class JscontextModelSnapshot : ModelSnapshot
+    [Migration("20211018232514_Articulo")]
+    partial class Articulo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -52,9 +54,6 @@ namespace HolaMundoBlazor.BD.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex(new[] { "CodArticulo" }, "UQ_Articulo_Cod")
-                        .IsUnique();
 
                     b.ToTable("Articulos");
                 });

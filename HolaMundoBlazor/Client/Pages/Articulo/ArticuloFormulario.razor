@@ -1,0 +1,62 @@
+﻿<EditForm Model="Articulo" OnValidSubmit="onValitSubmit">
+    <DataAnnotationsValidator />
+    <div>
+        <div class="form-group">
+            <div>
+                <label>Codigo</label>
+                <InputText class="form-control" @bind-Value="Articulo.CodArticulo" />
+                <ValidationMessage For="@(()=>Articulo.CodArticulo)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label>Nombre del articulo</label>
+                <InputText class="form-control" @bind-Value="Articulo.NombreArticulo" />
+                <ValidationMessage For="@(()=>Articulo.NombreArticulo)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label>Descripcion del articulo</label>
+                <InputText class="form-control" @bind-Value="Articulo.DescripcionArticulo" />
+                <ValidationMessage For="@(()=>Articulo.DescripcionArticulo)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label>Unidad del articulo</label>
+                <InputNumber class="form-control" @bind-Value="Articulo.UnidadArticulo" />
+                <ValidationMessage For="@(()=>Articulo.UnidadArticulo)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label>Cantidad del articulo</label>
+                <InputNumber class="form-control" @bind-Value="Articulo.CantidadArticulo" />
+                <ValidationMessage For="@(()=>Articulo.CantidadArticulo)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div>
+                <label>Categoria del articulo</label>
+                <InputText class="form-control" @bind-Value="Articulo.Categoria" />
+                <ValidationMessage For="@(()=>Articulo.Categoria)" />
+            </div>
+        </div>
+
+        <button class="btn btn-danger" type="submit">Agregar</button>
+        <button class="btn btn-dark" @onclick="onCancel" type="button">Cancelar</button>
+    </div>
+    
+
+
+
+</EditForm>
+
+@code {
+
+    [Parameter] public Articulo Articulo { get; set; }
+    [Parameter] public EventCallback onValitSubmit { get; set; }
+    [Parameter] public EventCallback onCancel { get; set; }
+
+}

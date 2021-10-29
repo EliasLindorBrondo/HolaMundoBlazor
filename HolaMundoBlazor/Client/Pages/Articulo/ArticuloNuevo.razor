@@ -1,0 +1,33 @@
+﻿@page "/articulo/crear"
+@inject NavigationManager navigationmanager
+@inject IHttpService http
+
+<h3>Agregar Nuevo Articulo</h3>
+<ArticuloFormulario onValitSubmit="AddArticulo" Articulo="articulo" onCancel="Cancelar" />
+
+
+
+@code {
+
+    private Articulo articulo = new();
+
+    private async Task AddArticulo()
+    {
+        var httpRespuesta = await http.Post<Articulo>("api/articulos", articulo);
+        if (httpRespuesta.Error)
+        {
+            var body = await httpRespuesta.GetBody();
+        }
+
+        navigationmanager.NavigateTo("/articulos");
+
+    }
+
+    private async Task Cancelar()
+    {
+        navigationmanager.NavigateTo("/articulos");
+
+    }
+
+}
+

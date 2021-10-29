@@ -1,5 +1,6 @@
 ﻿@page "/pais/crear" 
 @inject NavigationManager navigationmanager
+@inject IHttpService http
 
 <h3>Agregar Nuevo Pais</h3>
 <PaisFormulario onValitSubmit="AddPais"  Pais="pais" onCancel="Cancelar" />
@@ -12,7 +13,12 @@
 
     private async Task AddPais()
     {
-        Console.WriteLine($"Graba{pais.NombrePais}");
+        var httpRespuesta= await http.Post<HolaMundoBlazor.BD.Entidades.Pais>("api/paises",pais);
+        if (httpRespuesta.Error)
+        {
+            var body = await httpRespuesta.GetBody();
+        }
+
         navigationmanager.NavigateTo("/paises");
 
     }

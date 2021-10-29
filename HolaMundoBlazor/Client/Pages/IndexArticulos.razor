@@ -1,0 +1,108 @@
+﻿@page "/Articulos"
+@inject IHttpService http
+<center><h1>Articulos</h1></center>
+<br/>
+@if (articulos == null)
+{
+    <img src="/loading-2.gif" style="width:100%; height:auto;" alt="Funny image" />
+}
+else
+{
+    <br />
+    <center><a class="btn btn-info rounded-pill" href="articulo/crear">Agregar Nuevo</a></center>
+    <br />
+
+    <table class="table" style="background: linear-gradient(blue, violet); color: antiquewhite; ">
+        <tr class="border border-dark ">
+            <th>Codigo</th>
+            <th>Nombre</th>
+            <th>Descripcion</th>
+            <th>Unidad</th>
+            <th>En Stock</th>
+            <th>Categoria</th>
+            <th></th>
+            <th></th>
+        </tr>
+
+        @if (articulos == null)
+        {
+            <tr>Cargando.....</tr>
+        }
+        else if (articulos.Count == 0)
+        {
+            <tr>No existen articulos</tr>
+        }
+        else
+        {
+            @foreach (var item in articulos)
+            {
+                <tr style="border: 1px solid black;">
+                    <td>@item.CodArticulo</td>
+                    <td>@item.NombreArticulo</td>
+                    <td>@item.DescripcionArticulo</td>
+                    <td>@item.UnidadArticulo</td>
+                    <td>@item.CantidadArticulo</td>
+                    <td>@item.Categoria</td>
+                    <td><a class="btn btn-outline-info" style="color:aliceblue; border-radius:10px 10px;" href="articulo/modificar/@item.Id">Modificar</a></td>
+                    <td><button class="btn btn-outline-dark" style="color:aliceblue; border-radius:10px 10px;" @onclick="()=>Eliminar(item)">Eliminar</button></td>
+                </tr>
+
+            }
+        }
+
+    </table>
+}
+
+<Confirmacion @ref="confirmacion" onConfirm="Eliminarp" onCancel="Cancelar">
+    <div>¿Desea eliminar el Articulo @articuloEliminarp.NombreArticulo?</div>
+</Confirmacion>
+
+@code {
+    List<HolaMundoBlazor.BD.Data.Entidades.Articulo> articulos;
+    Confirmacion confirmacion;
+
+    HolaMundoBlazor.BD.Data.Entidades.Articulo articuloEliminarp;
+
+    protected override async Task OnInitializedAsync()
+    {
+        base.OnInitialized();
+
+        await Leer();
+    }
+
+    private async Task Leer()
+    {
+        var respuestaHttp = await http.Get<List<HolaMundoBlazor.BD.Data.Entidades.Articulo>>("api/articulos");
+        if (!respuestaHttp.Error)
+        {
+            articulos = respuestaHttp.Respuesta;
+        }
+
+    }
+
+    private void Cancelar()
+    {
+        confirmacion.Ocultar();
+        articuloEliminarp = null;
+    }
+
+    private void Eliminar(HolaMundoBlazor.BD.Data.Entidades.Articulo articuloEliminar)
+    {
+
+        confirmacion.Mostrar();
+
+        articuloEliminarp = articuloEliminar;
+
+    }
+
+    private async Task Eliminarp()
+    {
+        var respuesta = await http.Delete($"api/articulos/{articuloEliminarp.Id}");
+        if (respuesta.Error)
+        {
+            var body = await respuesta.GetBody();
+        }
+        Cancelar();
+        await Leer();
+    }
+}

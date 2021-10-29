@@ -15,6 +15,7 @@ namespace HolaMundoBlazor.BD.Data
         public DbSet<Pais> Paises { get; set; }
 
         public DbSet<Provincia> Provincias { get; set; }
+        public DbSet<Articulo> Articulos { get; set; }
         public Jscontext(DbContextOptions<Jscontext> options)
             : base(options)
         {

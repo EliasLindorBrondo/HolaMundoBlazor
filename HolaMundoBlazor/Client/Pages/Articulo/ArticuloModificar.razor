@@ -1,0 +1,52 @@
+﻿@page "/articulo/modificar/{ArticuloId:int}"
+@inject IHttpService http
+@inject NavigationManager navigationmanager
+
+<h3>Modificar Articulo</h3>
+
+<ArticuloFormulario onValitSubmit="ModificarArticulo" Articulo="articulo" onCancel="Cancelar" />
+
+@code {
+
+    private HolaMundoBlazor.BD.Data.Entidades.Articulo articulo ;
+    [Parameter] public int ArticuloId { get; set; }
+
+
+    protected async override Task OnInitializedAsync()
+    {
+        await MostrarArticulo();
+    }
+
+    private async Task MostrarArticulo()
+    {
+        var httpRespuesta = await http.Get<HolaMundoBlazor.BD.Data.Entidades.Articulo>($"api/articulos/{ArticuloId}");
+        if (httpRespuesta.Error)
+        {
+            var body = await httpRespuesta.GetBody();
+        }
+        else
+        {
+            articulo = httpRespuesta.Respuesta;
+        }
+
+    }
+
+    private async Task ModificarArticulo()
+    {
+        var httpRespuesta = await http.Put<HolaMundoBlazor.BD.Data.Entidades.Articulo>($"api/articulos/{ArticuloId}",articulo);
+        if (httpRespuesta.Error)
+        {
+            var body = await httpRespuesta.GetBody();
+        }
+
+        navigationmanager.NavigateTo("/articulos");
+    }
+
+    private async Task Cancelar()
+    {
+        navigationmanager.NavigateTo("/articulos");
+
+    }
+
+
+}

@@ -34,9 +34,7 @@ namespace HolaMundoBlazor.Server
               
         
 
-            services.AddControllersWithViews().AddJsonOptions(x =>
-            x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
-
+            services.AddControllersWithViews();
             //Net .6 en ves de Preserve es IgnoreCycles
 
 

@@ -1,33 +1,45 @@
-﻿@page "/pais/modificar/{PaisId:int}/{codPais}/{nomPais}"
+﻿@page "/pais/modificar/{PaisId:int}"
+@inject IHttpService http
 @inject NavigationManager navigationmanager
 
 <h3>Modificar Pais</h3>
 
-<PaisFormulario onValitSubmit="AddPais" Pais="pais" onCancel="Cancelar" />
+<PaisFormulario onValitSubmit="ModificarPais" Pais="pais" onCancel="Cancelar" />
 
 @code {
 
     private HolaMundoBlazor.BD.Entidades.Pais pais;
     [Parameter] public int PaisId { get; set; }
-    [Parameter] public string codPais { get; set; }
-    [Parameter] public string nomPais { get; set; }
+
 
     protected async override Task OnInitializedAsync()
     {
-       
-        pais = new ()
-        {
-            Id = PaisId,
-            CodPais = codPais,
-            NombrePais = nomPais
-        };
+        await MostrarPais();
     }
 
-    private async Task AddPais()
+    private async Task MostrarPais()
     {
-        Console.WriteLine($"Graba modificacion{pais.NombrePais}");
-        navigationmanager.NavigateTo("/paises");
+        var httpRespuesta = await http.Get<HolaMundoBlazor.BD.Entidades.Pais>($"api/paises/{PaisId}");
+        if (httpRespuesta.Error)
+        {
+            var body = await httpRespuesta.GetBody();
+        }
+        else
+        {
+            pais = httpRespuesta.Respuesta;
+        }
+        
+    }
 
+    private async Task ModificarPais()
+    {
+        var httpRespuesta = await http.Put<HolaMundoBlazor.BD.Entidades.Pais>($"api/paises/{PaisId}",pais);
+        if (httpRespuesta.Error)
+        {
+            var body = await httpRespuesta.GetBody();
+        }
+
+        navigationmanager.NavigateTo("/paises");
     }
 
     private async Task Cancelar()

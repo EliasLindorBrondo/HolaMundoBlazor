@@ -26,7 +26,8 @@ namespace HolaMundoBlazor.Server.Controllers
         public async  Task<ActionResult<List<Pais>>> Get()
         {
             //Select * from Paises --------- SQL
-            return await context.Paises.Include(x => x.Provincias).ToListAsync();
+            //return await context.Paises.Include(x => x.Provincias).ToListAsync();
+            return await context.Paises.ToListAsync();
         }
 
         [HttpGet("{id:int}")]

@@ -1,113 +1,98 @@
 ﻿@page "/paises"
-<h1>Paises</h1>
-
-<br />
-<a class="btn btn-success" href="pais/crear">Nuevo</a>
-<br />
-
-<table class="table">
-    <tr class="border border-dark ">
-        <th>Codigo</th>
-        <th>Nombre</th>
-    </tr>
-
-
-    @if (paises.Count == 0)
+@inject IHttpService http
+    <center><h1>Países</h1></center>
+<br/>
+    @if (paises == null)
     {
-        <tr>No existen paises</tr>
+        <img src="/loading-2.gif" style="width:100%; height:auto;" alt="Funny image" />
     }
     else
     {
-        @foreach (var item in paises)
-        {
-            <tr>
-                <td>@item.CodPais</td>
-                <td>@item.NombrePais</td>
-                <td><a class="btn btn-outline-info" href="pais/modificar/@item.Id/@item.CodPais/@item.NombrePais">Modificar</a></td>
-                <td><button class="btn btn-outline-dark" @onclick="()=>Eliminar(item)">Eliminar</button></td>
+        <br />
+        <center><a class="btn btn-info rounded-pill" href="pais/crear">Nuevo</a></center>
+        <br />
+
+        <table class="table " style="background: linear-gradient(blue, violet); color: antiquewhite;">
+            <tr class="border border-dark ">
+                <th>Codigo</th>
+                <th>Nombre</th>
+                <th></th>
+                <th></th>
             </tr>
 
+
+            @if(paises.Count == 0)
+            {
+            <tr>No existen paises</tr>
+            }
+            else
+            {
+               @foreach (var item in paises)
+                {
+
+                   <tr style="border: 1px solid black;">
+                       <td>@item.CodPais</td>
+                       <td>@item.NombrePais</td>
+                       <td><a class="btn btn-outline-info" style="color:aliceblue; border-radius:10px 10px;" href="pais/modificar/@item.Id">Modificar</a></td>
+                       <td><button class="btn btn-outline-dark" style="color:aliceblue; border-radius:10px 10px;" @onclick="() => Eliminar(item)">Eliminar</button></td>
+                   </tr>
+
+                }
+            }
+
+        </table>
+    }
+
+    <Confirmacion @ref="confirmacion" onConfirm="Eliminarp" onCancel="Cancelar">
+        <div>¿Desea eliminar el Pais @paisEliminarp.NombrePais?</div>
+    </Confirmacion>
+
+    @code {
+        List<HolaMundoBlazor.BD.Entidades.Pais> paises;
+        Confirmacion confirmacion;
+
+        HolaMundoBlazor.BD.Entidades.Pais paisEliminarp;
+
+        protected override async Task OnInitializedAsync()
+        {
+            base.OnInitialized();
+
+            await Leer();
         }
 
-    }
-
-</table>
-<Confirmacion @ref="confirmacion" onConfirm="Eliminarp" onCancel="Cancelar">
-    <div>¿Desea eliminar el Pais @paisEliminarp.NombrePais?</div>
-</Confirmacion>
-
-@*
-    @if (editar)
-    {
-
-        <br />
-        <br />
-        <h4>Modificar Pais</h4>
-
-        <br />
-        <input placeholder="Codigo de Pais" @bind="codPais" />
-        <input placeholder="Nombre de Pais" @bind="NomPais" />
-        <button class="btn btn-dark" @onclick="Modificar">Modificar</button>
-        <button class="btn btn-dark" @onclick="Cancelar">Cancelar</button>
-
-    }
-
-    @if (eliminar)
-    {
-        @if (editar )
+        private async Task Leer()
         {
+            var respuestaHttp = await http.Get<List<HolaMundoBlazor.BD.Entidades.Pais>>("api/paises");
+            if (!respuestaHttp.Error)
+            {
+                paises = respuestaHttp.Respuesta;
+            }
+
+        }
+
+        private void Cancelar()
+        {
+            confirmacion.Ocultar();
+            paisEliminarp = null;
+        }
+
+        private void Eliminar(HolaMundoBlazor.BD.Entidades.Pais paisEliminar)
+        {
+
+            confirmacion.Mostrar();
+
+            paisEliminarp = paisEliminar;
+
+        }
+
+        private async Task Eliminarp()
+        {
+            var respuesta = await http.Delete($"api/paises/{paisEliminarp.Id}");
+            if (respuesta.Error)
+            {
+                var body = await respuesta.GetBody();
+            }
             Cancelar();
-            eliminar = true;
+            await Leer();
         }
-        <br />
-        <br />
-        <h4>Eliminar Pais</h4>
-
-        <br />
-        <input placeholder="Codigo de Pais" @bind="codPais" />
-        <input placeholder="Nombre de Pais" @bind="NomPais" />
-        <button class="btn btn-dark" @onclick="Eliminarp">Eliminar</button>
-        <button class="btn btn-dark" @onclick="Cancelar">Cancelar</button>
-
     }
-*@
-@code {
-    List<HolaMundoBlazor.BD.Entidades.Pais> paises = new();
-    Confirmacion confirmacion;
-    string codPais = "";
-    string NomPais = "";
-    HolaMundoBlazor.BD.Entidades.Pais paisEliminarp;
-
-    protected override void OnInitialized()
-    {
-        base.OnInitialized();
-
-        paises = new()
-        {
-                new HolaMundoBlazor.BD.Entidades.Pais() { CodPais = "ar", NombrePais = "Argentina" },
-                new HolaMundoBlazor.BD.Entidades.Pais() { CodPais = "es", NombrePais = "España" }
-        };
-    }
-  
-    private void Cancelar()
-    {
-        confirmacion.Ocultar();
-        paisEliminarp = null;
-    }
-
-    private void Eliminar(HolaMundoBlazor.BD.Entidades.Pais paisEliminar)
-    {
-
-        confirmacion.Mostrar();
-        codPais = paisEliminar.CodPais;
-        NomPais = paisEliminar.NombrePais;
-        paisEliminarp = paisEliminar;
-
-    }
-
-    private void Eliminarp()
-    {
-        paises.Remove(paisEliminarp);
-        Cancelar();
-    }
-}
